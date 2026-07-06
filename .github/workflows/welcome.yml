@@ -1,10 +1,27 @@
+# ワークフローの名前を定義
 name: Post welcome comment
+# ワークフローの起動トリガーを設定
 on:
   pull_request:
     types: [opened]
+    # プルリクエストが新規作成された時のみ実行
+# 実行権限を設定
 permissions:
   pull-requests: write
+  # プルリクエストへコメントを書き込む権限を付与
+# 実行する処理（ジョブ）の定義
 jobs:
   welcome:
     name: Post welcome comment
     runs-on: ubuntu-latest
+    # 実行環境に最新版のUbuntuを指定
+    # GitHub CLIを使用してプルリクエストにコメントを投稿
+    steps:
+      - run: gh pr comment "$PR_URL" --body "Welcome to the repository!"
+      # コマンド実行に必要な環境変数を設定
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          # 認証用の自動生成トークン
+          # 対象PRのURL
+          
